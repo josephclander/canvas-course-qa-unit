@@ -1,0 +1,25 @@
+{
+    "name": "canvas-course-qa-unit",
+    "version": "1.0.0",
+    "description": "Unit level QA tests for validating Canvas course configuration and behaviour during development.",
+    "type": "commonjs",
+    "scripts": {
+        "test": "jest"
+    },
+    "keywords": [
+        "canvas",
+        "canvas-lms",
+        "qa",
+        "unit-testing",
+        "course-configuration",
+        "education"
+    ],
+    "author": "Joseph Lander",
+    "license": "MIT",
+    "devDependencies": {
+        "jest": "^30.2.0"
+    },
+    "engines": {
+        "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+    }
+}

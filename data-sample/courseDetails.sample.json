@@ -1,0 +1,47 @@
+{
+    "id": 12408355,
+    "name": "Canvas 101",
+    "course_code": "Canvas 101",
+    "account_id": 81259,
+    "created_at": "2025-07-08T15:17:49Z",
+    "start_at": null,
+    "default_view": "wiki",
+    "enrollment_term_id": 1,
+    "is_public": false,
+    "grading_standard_id": null,
+    "root_account_id": 10,
+    "uuid": "eT76NfyOTG6Dt2sYlN0OYpAtkePSx2YXwol1rLQP",
+    "license": "cc_by_nc_sa",
+    "grade_passback_setting": null,
+    "end_at": null,
+    "public_syllabus": false,
+    "public_syllabus_to_auth": false,
+    "storage_quota_mb": 500,
+    "is_public_to_auth_users": false,
+    "homeroom_course": false,
+    "course_color": null,
+    "friendly_name": null,
+    "hide_final_grades": false,
+    "apply_assignment_group_weights": true,
+    "calendar": {
+        "ics": "https://canvas.instructure.com/feeds/calendars/course_eT76NfyOTG6Dt2sYlN0OYpAtkePSx2YXwol1rLQP.ics"
+    },
+    "time_zone": "Europe/London",
+    "blueprint": false,
+    "template": false,
+    "sis_course_id": null,
+    "integration_id": null,
+    "enrollments": [
+        {
+            "type": "teacher",
+            "role": "TeacherEnrollment",
+            "role_id": 994,
+            "user_id": 117690706,
+            "enrollment_state": "active",
+            "limit_privileges_to_course_section": false
+        }
+    ],
+    "workflow_state": "available",
+    "course_format": "online",
+    "restrict_enrollments_to_course_dates": false
+}
