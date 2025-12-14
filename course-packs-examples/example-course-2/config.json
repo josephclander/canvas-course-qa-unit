@@ -3,8 +3,8 @@
     "courseId": 102,
     "expected": {
         "details": {
-            "name": "CFA Prep Series: Ethics",
-            "courseCode": "CFA Prep Series: Ethics",
+            "name": "Example 2",
+            "courseCode": "Example 2",
             "restrictEnrollmentsToCourseDates": false,
             "blueprint": false,
             "timeZone": "Europe/London",
