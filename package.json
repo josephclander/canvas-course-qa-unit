@@ -5,8 +5,7 @@
     "type": "commonjs",
     "scripts": {
         "course": "node tools/run-course.js",
-        "test": "node -r dotenv/config ./node_modules/.bin/jest --verbose --silent --noStackTrace",
-        "test:watch": "node -r dotenv/config ./node_modules/.bin/jest --watch"
+        "test": "node -r dotenv/config ./node_modules/.bin/jest --verbose --silent --noStackTrace"
     },
     "keywords": [
         "canvas",
