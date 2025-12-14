@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../schemas/canvas-course.schema.json
+# Canvas Course Requirements
+# Use 2 spaces for indentation. Do not use tabs.
+
+courseId: 102
+
+expected:
+  details:
+    name: "CFA Prep Series: Ethics"
+    courseCode: "CFA Prep Series: Ethics"
+
+    # Enrolment and access behaviour
+    restrictEnrollmentsToCourseDates: false
+    blueprint: false
+
+    # Schedule and dates
+    timeZone: "Europe/London"
+    startDateRequired: true
+    endDateRequired: true
+
+  settings:
+    # Student interaction
+    discussionsAllowed: false
+
+    # Visibility rules
+    restrictFutureView: true
+    restrictPastView: true

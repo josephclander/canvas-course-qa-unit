@@ -1,0 +1,92 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Canvas Course QA Unit Config",
+    "description": "Configuration for unit-level QA tests against a Canvas course.",
+    "type": "object",
+    "required": [
+        "courseId",
+        "expected"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "JSON schema reference for editor tooling."
+        },
+        "courseId": {
+            "type": "number",
+            "description": "Canvas course ID to run tests against."
+        },
+        "expected": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "details": {
+                    "type": "object",
+                    "description": "Expectations that come from the Course Details endpoint.",
+                    "additionalProperties": false,
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Expected course name (maps to course details name)."
+                        },
+                        "courseCode": {
+                            "type": "string",
+                            "description": "Expected course code (maps to course details course_code)."
+                        },
+                        "restrictEnrollmentsToCourseDates": {
+                            "type": "boolean",
+                            "description": "Maps to course details restrict_enrollments_to_course_dates."
+                        },
+                        "timeZone": {
+                            "type": "string",
+                            "description": "Expected IANA timezone for the course.",
+                            "enum": [
+                                "Europe/London",
+                                "Europe/Amsterdam",
+                                "America/New_York",
+                                "America/Chicago",
+                                "America/Toronto",
+                                "Africa/Johannesburg",
+                                "Asia/Muscat",
+                                "Asia/Riyadh",
+                                "Asia/Singapore"
+                            ]
+                        },
+                        "blueprint": {
+                            "type": "boolean",
+                            "description": "If true, the course is a blueprint."
+                        },
+                        "startDateRequired": {
+                            "type": "boolean",
+                            "description": "If true, course start_at must not be null. If false, start_at must be null."
+                        },
+                        "endDateRequired": {
+                            "type": "boolean",
+                            "description": "If true, course end_at must not be null. If false, end_at must be null."
+                        }
+                    }
+                },
+                "settings": {
+                    "type": "object",
+                    "description": "Expectations that come from the Course Settings endpoint.",
+                    "additionalProperties": false,
+                    "properties": {
+                        "discussionsAllowed": {
+                            "type": "boolean",
+                            "description": "Whether student discussions are allowed."
+                        },
+                        "restrictFutureView": {
+                            "type": "boolean",
+                            "description": "Whether students are prevented from viewing course content before the start date."
+                        },
+                        "restrictPastView": {
+                            "type": "boolean",
+                            "description": "Whether students are prevented from viewing course content after the end date."
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -22,17 +22,9 @@ coverage/
 !.env.example
 
 # -------------------------
-# Local API data
+# Course packs (Canvas QA)
 # -------------------------
-data/*.json
-
-# -------------------------
-# Local Config data
-# -------------------------
-config/*.json
-
-# Allow example config to be committed
-!config/canvas.config.example.json
+course-packs/*
 
 # -------------------------
 # OS files

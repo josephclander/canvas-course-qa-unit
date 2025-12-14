@@ -1,0 +1,19 @@
+{
+    "$schema": "../../schemas/canvas-course.schema.json",
+    "courseId": 101,
+    "expected": {
+        "details": {
+            "name": "Canvas 101",
+            "courseCode": "Canvas 101",
+            "restrictEnrollmentsToCourseDates": false,
+            "timeZone": "Europe/London",
+            "startDateRequired": false,
+            "endDateRequired": false
+        },
+        "settings": {
+            "discussionsAllowed": false,
+            "restrictFutureView": true,
+            "restrictPastView": true
+        }
+    }
+}

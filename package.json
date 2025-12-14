@@ -4,7 +4,8 @@
     "description": "Unit level QA tests for validating Canvas course configuration and behaviour during development.",
     "type": "commonjs",
     "scripts": {
-        "test": "node -r dotenv/config ./node_modules/.bin/jest",
+        "course": "node tools/run-course.js",
+        "test": "node -r dotenv/config ./node_modules/.bin/jest --verbose --silent --noStackTrace",
         "test:watch": "node -r dotenv/config ./node_modules/.bin/jest --watch"
     },
     "keywords": [

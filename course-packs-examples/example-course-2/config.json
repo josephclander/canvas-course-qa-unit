@@ -1,0 +1,20 @@
+{
+    "$schema": "../../schemas/canvas-course.schema.json",
+    "courseId": 102,
+    "expected": {
+        "details": {
+            "name": "CFA Prep Series: Ethics",
+            "courseCode": "CFA Prep Series: Ethics",
+            "restrictEnrollmentsToCourseDates": false,
+            "blueprint": false,
+            "timeZone": "Europe/London",
+            "startDateRequired": true,
+            "endDateRequired": true
+        },
+        "settings": {
+            "discussionsAllowed": false,
+            "restrictFutureView": true,
+            "restrictPastView": true
+        }
+    }
+}
