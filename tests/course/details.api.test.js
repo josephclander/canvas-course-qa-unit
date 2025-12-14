@@ -1,5 +1,9 @@
 const { loadLocalConfig } = require("../../utils/loadLocalConfig");
 const { createCanvasApi } = require("../../utils/canvasApi");
+const {
+  expectIfDefined,
+  expectPresence,
+} = require("../../utils/testAssertions");
 
 describe("Course details", () => {
   const cfg = loadLocalConfig();
@@ -17,47 +21,33 @@ describe("Course details", () => {
   });
 
   test("name", () => {
-    if (detailsCfg?.name === undefined) return;
-    expect(details.name).toBe(detailsCfg.name);
+    expectIfDefined(details.name, detailsCfg?.name);
   });
 
   test("course code", () => {
-    if (detailsCfg?.courseCode === undefined) return;
-    expect(details.course_code).toBe(detailsCfg.courseCode);
+    expectIfDefined(details.course_code, detailsCfg?.courseCode);
   });
 
   test("restrict enrollments to course dates", () => {
-    if (detailsCfg?.restrictEnrollmentsToCourseDates === undefined) return;
-    expect(details.restrict_enrollments_to_course_dates).toBe(
-      detailsCfg.restrictEnrollmentsToCourseDates
+    expectIfDefined(
+      details.restrict_enrollments_to_course_dates,
+      detailsCfg?.restrictEnrollmentsToCourseDates
     );
   });
 
   test("timezone", () => {
-    if (detailsCfg?.timeZone === undefined) return;
-    expect(details.time_zone).toBe(detailsCfg.timeZone);
+    expectIfDefined(details.time_zone, detailsCfg?.timeZone);
   });
 
   test("start date", () => {
-    if (detailsCfg?.startDateRequired === true) {
-      expect(details.start_at).not.toBeNull();
-    }
-    if (detailsCfg?.startDateRequired === false) {
-      expect(details.start_at).toBeNull();
-    }
+    expectPresence(details.start_at, detailsCfg?.startDateRequired);
   });
 
   test("end date", () => {
-    if (detailsCfg?.endDateRequired === true) {
-      expect(details.end_at).not.toBeNull();
-    }
-    if (detailsCfg?.endDateRequired === false) {
-      expect(details.end_at).toBeNull();
-    }
+    expectPresence(details.end_at, detailsCfg?.endDateRequired);
   });
 
   test("blueprint", () => {
-    if (detailsCfg?.blueprint === undefined) return;
-    expect(details.blueprint).toBe(detailsCfg.blueprint);
+    expectIfDefined(details.blueprint, detailsCfg?.blueprint);
   });
 });
