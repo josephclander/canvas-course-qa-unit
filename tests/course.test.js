@@ -4,7 +4,7 @@ const courseDetails = require("../data/courseDetails.json");
 const courseSettings = require("../data/courseSettings.json");
 const TIMEZONES = require("../utils/timezones");
 
-const selectedTimeZone = TIMEZONES.RIYADH;
+const selectedTimeZone = TIMEZONES.LONDON;
 
 // API: GET https://{{domain}}/api/v1/accounts/:account_id/courses/:id
 describe("Course Details", () => {
