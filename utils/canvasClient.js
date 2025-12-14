@@ -10,6 +10,8 @@ function createCanvasClient() {
   async function get(path) {
     const headers = {
       Accept: "application/json",
+      "User-Agent":
+        process.env.CANVAS_USER_AGENT || "canvas-course-qa-unit/1.0.0",
       ...(await auth.getAuthHeader()),
     };
 
