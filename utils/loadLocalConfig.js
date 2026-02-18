@@ -1,11 +1,12 @@
-const fs = require("fs");
-const path = require("path");
+// utils/loadLocalConfig.js
+import fs from "fs";
+import path from "path";
 
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
 }
 
-function loadLocalConfig() {
+export function loadLocalConfig() {
   const cwd = process.cwd();
 
   const courseId = process.env.CANVAS_COURSE_ID;
@@ -23,7 +24,7 @@ function loadLocalConfig() {
 
   if (!packName) {
     throw new Error(
-      `Course ID ${courseId} not found in course-packs/index.json`
+      `Course ID ${courseId} not found in course-packs/index.json`,
     );
   }
 
@@ -40,5 +41,3 @@ function loadLocalConfig() {
     courseId: Number(courseId),
   };
 }
-
-module.exports = { loadLocalConfig };

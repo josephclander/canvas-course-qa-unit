@@ -1,6 +1,10 @@
-const { createCanvasClient } = require("./canvasClient");
+// utils/canvasApi.js
 
-function createCanvasApi() {
+// For each new endpoint you need to add the scope to the .env file
+
+import { createCanvasClient } from "./canvasClient.js";
+
+export function createCanvasApi() {
   const client = createCanvasClient();
 
   return {
@@ -19,5 +23,3 @@ function createCanvasApi() {
     // Later: modulesList(courseId), moduleItems(courseId, moduleId), etc.
   };
 }
-
-module.exports = { createCanvasApi };

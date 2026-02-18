@@ -1,17 +1,19 @@
 // utils/canvasAuth.js
-const fetch = require("node-fetch");
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
-// token stored in home directory for light safety against commits
-const TOKEN_FILE = path.join(os.homedir(), "canvas-course-qa-unit.token.json");
+const fetchApi = globalThis.fetch;
+
+export const TOKEN_FILE = path.resolve(
+  process.cwd(),
+  "canvas-course-qa-unit.token.json",
+);
 
 function minutesRemaining(ms) {
   return Math.max(0, Math.ceil(ms / 60000));
 }
 
-function readTokenFromDisk() {
+export function readTokenFromDisk() {
   try {
     const raw = fs.readFileSync(TOKEN_FILE, "utf8");
     const parsed = JSON.parse(raw);
@@ -22,22 +24,23 @@ function readTokenFromDisk() {
   }
 }
 
-function writeTokenToDisk(tokenObj) {
-  // mode is best-effort on Windows but harmless elsewhere
-  fs.writeFileSync(TOKEN_FILE, JSON.stringify(tokenObj, null, 2), {
-    mode: 0o600,
-  });
+export function writeTokenToDisk(tokenObj) {
+  try {
+    fs.writeFileSync(TOKEN_FILE, JSON.stringify(tokenObj, null, 2), {
+      mode: 0o600,
+    });
+  } catch {
+    fs.writeFileSync(TOKEN_FILE, JSON.stringify(tokenObj, null, 2));
+  }
 }
 
-function createAuth() {
-  const authMode = process.env.CANVAS_AUTH_MODE || "pat";
-  const baseUrl = process.env.CANVAS_BASE_URL;
+export function createAuth() {
+  const authMode = process.env.CANVAS_AUTH_MODE;
+  const baseUrl = process.env.CANVAS_BASE_URL?.replace(/\/+$/, "");
 
+  if (!authMode) throw new Error("Missing CANVAS_AUTH_MODE, oauth2 or pat");
   if (!baseUrl) throw new Error("Missing CANVAS_BASE_URL.");
 
-  // --------------------
-  // PAT auth
-  // --------------------
   if (authMode === "pat") {
     const token = process.env.CANVAS_TOKEN;
     if (!token) throw new Error("Missing CANVAS_TOKEN (PAT auth).");
@@ -49,79 +52,81 @@ function createAuth() {
     };
   }
 
-  // --------------------
-  // OAuth2 auth (client_credentials)
-  // --------------------
   if (authMode === "oauth2") {
     const clientId = process.env.CANVAS_CLIENT_ID;
     const clientSecret = process.env.CANVAS_CLIENT_SECRET;
+    const redirectUri = process.env.REDIRECT_URI;
 
-    if (!clientId || !clientSecret) {
+    if (!clientId || !clientSecret || !redirectUri) {
       throw new Error(
-        "Missing CANVAS_CLIENT_ID or CANVAS_CLIENT_SECRET (OAuth2 auth)."
+        "Missing CANVAS_CLIENT_ID, CANVAS_CLIENT_SECRET or REDIRECT_URI (OAuth2 auth).",
       );
     }
 
-    // Load cached token from disk at startup (so repeated node runs reuse it)
     const cached = readTokenFromDisk();
-    let cachedToken = cached?.access_token || null;
+    let accessToken = cached?.access_token || null;
+    let refreshToken = cached?.refresh_token || null;
     let tokenExpiry = cached?.expires_at || 0;
 
-    async function fetchToken() {
-      const res = await fetch(`${baseUrl}/login/oauth2/token`, {
+    async function refreshAccessToken() {
+      if (!refreshToken) {
+        throw new Error(
+          "No refresh_token found. Run `npm run oauth2:login` to obtain tokens.",
+        );
+      }
+
+      const res = await fetchApi(`${baseUrl}/login/oauth2/token`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
-          grant_type: "client_credentials",
+          grant_type: "refresh_token",
           client_id: clientId,
           client_secret: clientSecret,
+          redirect_uri: redirectUri,
+          refresh_token: refreshToken,
         }),
       });
 
       if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`OAuth2 token request failed: ${text}`);
+        const text = await res.text().catch(() => "");
+        throw new Error(`OAuth2 refresh failed: ${text}`);
       }
 
       const data = await res.json();
 
-      cachedToken = data.access_token;
+      accessToken = data.access_token;
+      refreshToken = data.refresh_token || refreshToken;
       tokenExpiry = Date.now() + (data.expires_in ?? 3600) * 1000;
 
       writeTokenToDisk({
-        access_token: cachedToken,
+        access_token: accessToken,
+        refresh_token: refreshToken,
         expires_at: tokenExpiry,
       });
 
-      console.log(
-        `[Canvas auth] New token acquired. ~${minutesRemaining(
-          (data.expires_in ?? 3600) * 1000
-        )} min valid.`
-      );
+      return accessToken;
+    }
 
-      return cachedToken;
+    async function ensureAccessToken() {
+      const now = Date.now();
+      if (!accessToken) {
+        throw new Error(
+          "No access token present. Run `npm run oauth2:login` to authenticate.",
+        );
+      }
+      if (now >= tokenExpiry) {
+        await refreshAccessToken();
+      }
+      return accessToken;
     }
 
     return {
       async getAuthHeader() {
-        const now = Date.now();
-
-        if (!cachedToken || now >= tokenExpiry) {
-          await fetchToken();
-        } else {
-          console.log(
-            `[Canvas auth] Reusing token. ~${minutesRemaining(
-              tokenExpiry - now
-            )} min remaining.`
-          );
-        }
-
-        return { Authorization: `Bearer ${cachedToken}` };
+        const token = await ensureAccessToken();
+        return { Authorization: `Bearer ${token}` };
       },
     };
   }
 
   throw new Error(`Unknown CANVAS_AUTH_MODE: ${authMode}`);
 }
-
-module.exports = { createAuth };

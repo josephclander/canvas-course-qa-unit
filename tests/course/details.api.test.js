@@ -1,9 +1,7 @@
-const { loadLocalConfig } = require("../../utils/loadLocalConfig");
-const { createCanvasApi } = require("../../utils/canvasApi");
-const {
-  expectIfDefined,
-  expectPresence,
-} = require("../../utils/testAssertions");
+// tests/course/details.api.test.js
+import { loadLocalConfig } from "../../utils/loadLocalConfig.js";
+import { createCanvasApi } from "../../utils/canvasApi.js";
+import { expectIfDefined, expectPresence } from "../../utils/testAssertions.js";
 
 describe("Course details", () => {
   const cfg = loadLocalConfig();

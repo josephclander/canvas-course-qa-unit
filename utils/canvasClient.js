@@ -1,6 +1,9 @@
-const { createAuth } = require("./canvasAuth");
+// utils/canvasClient.js
+import { createAuth } from "./canvasAuth.js";
 
-function createCanvasClient() {
+const fetchApi = globalThis.fetch;
+
+export function createCanvasClient() {
   const baseUrl = process.env.CANVAS_BASE_URL;
   if (!baseUrl) throw new Error("Missing CANVAS_BASE_URL.");
 
@@ -15,12 +18,12 @@ function createCanvasClient() {
       ...(await auth.getAuthHeader()),
     };
 
-    const res = await fetch(`${root}${path}`, { method: "GET", headers });
+    const res = await fetchApi(`${root}${path}`, { method: "GET", headers });
 
     if (!res.ok) {
       const text = await res.text().catch(() => "");
       throw new Error(
-        `Canvas API failed (${res.status}) GET ${path}\n${text}`.trim()
+        `Canvas API failed (${res.status}) GET ${path}\n${text}`.trim(),
       );
     }
 
@@ -29,5 +32,3 @@ function createCanvasClient() {
 
   return { get };
 }
-
-module.exports = { createCanvasClient };

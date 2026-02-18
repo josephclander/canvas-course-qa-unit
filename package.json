@@ -1,11 +1,12 @@
 {
     "name": "canvas-course-qa-unit",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Unit level QA tests for validating Canvas course configuration and behaviour during development.",
-    "type": "commonjs",
+    "type": "module",
     "scripts": {
+        "oauth2:login": "node tools/oauth2-login.js",
         "course": "node tools/run-course.js",
-        "test": "node -r dotenv/config ./node_modules/.bin/jest --verbose --silent --noStackTrace"
+        "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config ./jest.config.mjs --runInBand"
     },
     "keywords": [
         "canvas",
@@ -23,5 +24,10 @@
     },
     "engines": {
         "node": "^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0"
+    },
+    "dependencies": {
+        "ci": "^2.3.0",
+        "express": "^5.2.1",
+        "open": "^11.0.0"
     }
 }
