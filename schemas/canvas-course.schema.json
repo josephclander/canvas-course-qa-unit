@@ -72,6 +72,10 @@
                     "description": "Expectations that come from the Course Settings endpoint.",
                     "additionalProperties": false,
                     "properties": {
+                        "course_image": {
+                            "type": "string",
+                            "description": "Expected url to course thumbnail image."
+                        },
                         "discussionsAllowed": {
                             "type": "boolean",
                             "description": "Whether student discussions are allowed."
